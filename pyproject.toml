@@ -2,3 +2,26 @@
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[dependencies]
+python = ">=3.9,<3.13"
+langchain-openai = "^0.3.7"
+langchain-community = "^0.3.18"
+langchain = "^0.3.9"
+pymysql = "^1.1.1"
+chromadb = "^0.6.3"
+ipykernel = "^6.29.4"
+langchainhub = "^0.1.17"
+gpt4all = "^2.6.0"
+langchain-chroma = "^0.2.2"
+bs4 = "^0.0.2"
+llama-cpp-python = "^0.2.76"
+psycopg2 = "^2.9.9"
+langchain-experimental = "^0.3.4"
+openlm = "^0.0.5"
+openllm = "^0.5.7"
+langchain-core = "^0.3.39"
+langchain-experimental = "^0.3.4"
+langchain-ollama = "^0.2.3",
+sql_metadata
+sqlalchemy
+sqlvalidator
