@@ -2,26 +2,45 @@
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[dependencies]
-python = ">=3.9,<3.13"
-langchain = "^0.3.9"
-langchain-openai = "^0.3.7"
-langchain-community = "^0.3.18"
-langchain-chroma = "^0.2.2"
-langchain-experimental = "^0.3.4"
-langchain-core = "^0.3.39"
-langchain-ollama = "^0.2.3",
-langchainhub = "^0.1.17"
-pymysql = "^1.1.1"
-chromadb = "^0.6.3"
-ipykernel = "^6.29.4"
-gpt4all = "^2.6.0"
-bs4 = "^0.0.2"
-llama-cpp-python = "^0.2.76"
-psycopg2 = "^2.9.9"
-openlm = "^0.0.5"
-openllm = "^0.5.7"
-sql_metadata = "^2.15.0"
-sqlparse = "^0.5.3"
-sqlvalidator = "^0.0.20"
+[project]
+name = "texttosql_localllm"
+version = "0.1.0"
+description="Run text to sql workflows and benchmarks using Ollama and Langchain",
+readme = "README.md"  # You can also specify a file path here
+requires-python = ">=3.9"
+
+# Authors and maintainers can be a list of tables.
+authors = [
+  { name = "David Visontai", email = "david.visontai@ttk.elte.hu" }
+]
+
+# License can be declared as an SPDX identifier or by referencing a file.
+license = { file = "LICENSE" }
+
+# Dependencies that will be installed along with your package.
+dependencies = [
+    'chromadb==0.6.3',
+    'langchain==0.3.19',
+    'langchain-chroma==0.2.2',
+    'langchain-community==0.3.18',
+    'langchain-core==0.3.39',
+    'langchain-experimental==0.3.4',
+    'langchain-ollama==0.2.3',
+    'langchain-openai==0.3.7',
+    'langchain-text-splitters==0.3.6',
+    'sql_metadata',
+    'sqlalchemy',
+    'sqlvalidator'
+]
+
+# Additional optional fields
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+
+# URLs for your project (like homepage, repository, documentation)
+[project.urls]
+"Homepage" = "https://github.com/jegesm/texttosql_localllm"
+"Repository" = "https://github.com/jegesm/texttosql_localllm"
 
