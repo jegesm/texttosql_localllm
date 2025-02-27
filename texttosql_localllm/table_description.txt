@@ -1,0 +1,20 @@
+table	description
+antibiotic_resfinder	Table to pair antimicrobial resistance genes with antibiotics. 
+checkm2	Checkm2 (https://github.com/chklovski/CheckM2) was used to predict completeness and contamination of the binned genomes. Values are in percentage
+class_resfinder	Table to pair antimicrobial resistance genes with antimicrobial resistance class (derived from Resfinder)
+class_resfinder_clr	Number of fragments assigned to each antimicrobial resistance gene were aggregated and normalized to gene length by antimicrobial classes and transformed to clr values, related to the class_resfinder table. 
+gene_resfinder_clr	This table stores the abundance of each antimicrobial resistance gene for each sample. The reads aligned to each genes were normalized to gene lengths then transform to centered log ratio (clr) values, related to the gene_resfinder table. When counting samples or sample ratios this table needs to be joined with gene_resfinder, because there are multiple rows in the gene_resfinder that is about the same sample but from different sequencing
+gene_resfinder	This table contains metadata on antimicrobial resistance genes (derived from Resfinder)
+contig	MEGAHIT was used to co-assemble metagenomes by sampling sites and to individually assemble metagenomes to contigs. MEGAHIT is an ultra-fast and memory-efficient NGS assembler. It is optimized for metagenomes. PPR-Meta was used to identify sequences as phages, chromosomes or plasmids. The program calculates three scores reflecting the likelihood of each input contig as phage, chromosome or plasmid.
+gene_annotation	Prokka was used to identified genes in MAGs. Prokka is a software tool to annotate bacterial genomes qne produce standards-compliant output files.  (https://github.com/tseemann/prokka) We have run Prokka on genomes which are part of the MAG referenece table
+gtdb	GTDB-Tk was used for assigning taxonomic classification to assembled genomes based on the Genomic Taxonomy Database (GTDB) (v220). This table stores the result of this classification.
+location	This table stores the detailed locations of each sewage treatment plant from which a sample can be collected
+mag_abundance_clr	Each sequence run was aligned to the representative collection of metagenome-assembled genomes (MAGs) (records in the mag table with column selected = True) with minimap2 (https://github.com/lh3/minimap2). Subsequently, the generated BAM files underwent processing via the jgi_summerize_bam_contig_depths function of the MetaBAT2 (https://bitbucket.org/berkeleylab/metabat/src/master/) package. The depth values were transformed to clr.  
+mag_reference	MetaBAT2 (https://bitbucket.org/berkeleylab/metabat/src/master/) was used to bin genomes out of each assembly with its corresponding contigs and depth file. This column indicates for each MAG if they are part of this collection or not. Only genome bins of at least 200,000 bp were retained as is the default. High- and medium quality called metagenome-assembled genomes (MAGs) were dereplicated to extract a collection of unique genomes. 
+meta	This table stores the metadata collected for each sample
+protein	Table to store the name of the gene products.
+qpcr	A particular set of pathogens underwent qPCR testing. This table shows if a tested pathogen can be detected in a given sample.
+relationship_gtdb	GTDB hierarchy between different taxons.
+tax_gtdb	This table stores taxonomy data of the gtdb table.
+qpcr_target	The target (gene, genetic marker, or pathogen-specific region) and primer sequences that were used in the qPCR assays to identify the pathogen (specified in the "qpcr" table).
+mag_presence_absence	List of species those presence was confirmed in a given sample

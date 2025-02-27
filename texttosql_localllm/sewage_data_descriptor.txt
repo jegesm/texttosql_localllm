@@ -1,0 +1,86 @@
+An extensive metagenomic dataset of sewage samples across five European cities
+
+---
+Abstract
+
+
+Sewage metagenomics is a powerful tool for the proactive surveillance of potential pathogens and disease outbreaks, enabling rapid response strategies for threats like COVID-19. To unveil emerging patterns in sewage microbial communities, a comprehensive understanding of the microbial composition of sewage is imperative. Here, we present a substantial longitudinal dataset originating from five European cities, consisting of 238 distinct sewage samples, undergoing short-read metagenomic sequencing. We also employed qPCR technique to identify potential pathogens. Preliminary analysis of the short-read dataset included identification of antimicrobial resistance genes and various taxa. Furthermore, metagenome-assembled genomes were reconstructed for each individual sample and sampling site, providing a selection of 2,332 unique, high- and medium-quality prokaryotic species, classified using the Genome Taxonomy Database.
+
+---
+
+Background & Summary
+
+
+Sewage has for more than four decades been used for surveillance of infectious disease threats and recently gained increased interest following the SARS-CoV-2 pandemic. Initially suggested as a supplement for polio surveillance1, widely explored for surveillance of antimicrobial resistance (AMR), and recently successfully used for surveillance of SARS-CoV-2. In 2016, we initiated the global sewage project during which we collected and performed metagenomic sequencing on sewage from around the world. Antimicrobial resistance gene (ARG) quantification during this project has shown major diversity and statistical analysis showed that antimicrobial resistance (AMR) trends could be explained by indicators related to the national health system and sanitation. We have also done a number of exploratory studies on the global composition of the bacteriome, virome and human population genetics, as well as longitudinal studies of AMR in Copenhagen. However, while all raw sequencing data from these projects have been shared to enable further re-use by the global research community, expensive bioinformatic computation, many intermediary files and duplicate efforts would be required by others to fully utilize the datasets in other applications.
+Here we present a comprehensive dataset originating from our longitudinal sewage surveillance in five European cities: Copenhagen, Rotterdam, Budapest, Rome and Bologna over 9-19 months with variable time frames between the cities (2019-2021). This includes the raw data from shotgun metagenomic sequencing and qPCR (for pathogens) done on 230 samples. The metadata provided comprises GPS coordinates, the names of the sewage treatment plants, and, for some cities, temperature and pH measurements. Additionally, the dataset incorporates outputs of bioinformatic analyses, including abundances of ARGs and different taxa obtained through reference-based classification of sequencing reads. Metagenomic assemblies are presented in the form of contigs, binned contigs and metagenome-assembled genomes (MAGs), accompanied by relevant quality assessments and annotations.
+
+---
+Methods
+Sample collection and shipment 
+
+Invitations to all participating partners in Italy, Hungary and the Netherlands were sent by The National Food Institute, Technical University of Denmark (DTU) electronically. Each partner was responsible for obtaining the sewage samples and arranging the shipments to DTU. The Danish sewage samples were part of ongoing sewage surveillance in Denmark conducted by DTU. 1-2 L of unprocessed, non-filtered and untreated urban sewage samples were collected with a 24-hour automatic sampler except for Bologna where point samples were collected manually. A total of 20, 28, 39, 26 and 165 samples (including 40 replicates) were collected from Rome (2020-03-17, 2020-12-09), Bologna (2020-03-12, 2021-04-27), Rotterdam (2020-04-08, 2021-11-03), Budapest (2020-05-18,  2021-05-17) and Copenhagen (2019-01-30, 2020-09-28), respectively. The raw sewage was stored frozen at −80 °C until transportation to DTU. All sewage samples were transported untreated with any chemicals or DNA stabilizers and remained frozen upon arrival until DNA extractions. 
+---
+Bio-archiving and sample preparation
+
+
+Upon arrival, each sewage sample was photographed and electronically archived at DTU. Each sample was given a unique identifier, along with the given name by the collectors, to discriminate between the samples. Those identifiers were linked to all available metadata with the biological samples, e.g., exact location, arrival conditions, colouration, and which sewage plant. No human or personal data were collected or linked to the biological samples. All information resulting from archiving the samples and their metadata was eventually submitted to a MySQL database.
+500 mL from each samples were defrosted slowly over 2 days at 4 °C in order to maintain the community stable as much as possible and avoid drastic or sudden changes to the bacterial communities. Once thawed, the raw sewage was centrifuged for 10 minutes at 10,000 x g to collect sewage pellets from each sample. All sewage pellets were stored at −80 °C until DNA extractions. The sewage supernatant were then stored at −80 °C for viral detection and analyses.    
+
+---
+DNA extraction and sequencing 
+
+
+DNA extraction was done as previously described in the work of Hendriksen et al. DNA yields were quantified using Qubit 2.0 DNA HS Assay (Thermo Fisher Scientific, Waltham, MA). Library preparation for metagenomic analysis was performed using KAPA HyperPrep kit without PCR as per the manufacturer’s recommendations (Kapa Biosystems, Roche, Basel, Switzerland). Library quality and quantity were assessed with the Qubit 2.0 DNA HS Assay (Thermo Fisher Scientific, Waltham, MA) and QuantStudio® 5 (Applied Biosystems, Foster City, CA). All libraries were sequenced on Illumina NovaSeq6000 platform.
+---
+qPCR 
+
+Real-time PCR for the detection of selected bacterial pathogens and parasitic protozoans was conducted in six multiplex reactions using a total reaction volume of 20 µl with SensiFast (Bioline, GC Biotech, Waddinxveen, Netherlands) mastermix, primer and probe concentrations of 0,5 µM and 0,25 µM respectively, except for G. lamblia (primers: 0,25 µM, probe: 0,05 µM). PCRs were run on a Lightcycler 480 II instrument (Roche Diagnostics, Basel, Switzerland) using 45 cycles of 5 seconds of denaturation at 95°C and 30 seconds annealing at 60°C using Phocid herpesvirus as internal control. 
+---
+
+Reference-based metagenomic workflows
+
+Trimmed reads of all libraries were mapped using kma14 (v1.2.8) with paired-end files singleton files as input against the ResFinder database (commit=3eedbde).
+ResFinder consists of a manually curated collection of antimicrobial resistance gene sequences. Settings of kma allowed mapping only one query sequence per template and with default penalty values. Resulting mapstat files summarizing abundances in each sample were loaded into the database.
+---
+Assembly-based metagenomic workflows
+
+Sequence reads from each sewage sample were assembled as part of the Lazypipe v2.1 pipeline with default settings. Briefly, these steps involve filtering input reads with fastp, following assembly with MEGAHIT (v1.2.8). Additionally, large within-treatment plant co-assemblies of sequence runs were performed, using MEGAHIT (v1.2.8). With both approaches we were able to assemble 67,851,611 contigs.
+---
+Contig-level annotation
+
+We executed the PPR-Meta(v. 1.1) tool to analyze all contigs obtained from individual and co-assembled samples obtained from MEGAHIT assembler. PPR-Meta, a deep learning-based computational tool, effectively classifies metagenomic fragments into phages, plasmids, or chromosomal origins. Its novel Convolutional Neural Network architecture is particularly adept at handling short sequence fragments, a common challenge in metagenomic datasets. This capability could significantly enhance the comprehension of mobile genetic elements, contributing to a deeper understanding of horizontal gene transfer phenomena.
+---
+Metagenome-assembled genomes 
+
+Co-abundance binning with METABAT2 (v2.15) resulted in 21,708,166 contigs binned into 34,725 metagenome-assembled genomes (MAGs). Through dereplication of medium and high- quality genomes (details in Technical Validation) we identified 2,332 distinct prokaryotic species among the MAGs. The genomes were taxonomically assigned using GTDB-tk24, and to label and identify their relevant genomic features they were annotated using Prokka (v1.14.6) with default settings. 
+---
+Species quantification
+
+Each sequence run was aligned to the representative collection of MAGs with minimap2. Subsequently, the generated BAM files underwent processing via the jgi_summerize_bam_contig_depths function of the METABAT2 package. From there, we computed the number of aligned nucleotides in each MAG and sample by multiplying the contig length out of each contig by the depth of each contig in each of the bam files.
+---
+Sewage database
+
+Results in the form of summary tables of the analyses were organized into a PostgreSQL database referred to as sewage database. During the schema design of the sewage database we balanced between the dogma of canonical data representation and their usability. The meta information of the samples is stored in two separate tables to minimize data repetition. These are the ‘meta’ and the ‘location’ tables. The table ‘meta’ contains additional information about the samples including collection date, sample type, DNA purification method and a reference to the collection site. The closely related table, ‘location’, details the sites where samples have been taken, including their country, city, the GPS location information and the name of the plant. 
+Abundance tables hold the results of the three different analysis pipelines. Abundance tables for the ARG classification and genomic reference-based classification approaches (‘resfinder_gene_abundance’, ‘resfinder_class_abundance’) contain the number of reads aligned to each resistance gene or genome. Abundance table for the high- and medium-quality dereplicated MAG collection called ‘mag_abundance’. This table contains the number of bases aligned to each MAG per sample.  
+The results of qPCR results can be found in table ‘qpcr’.
+  
+---
+Technical Validation 
+
+
+Validation of acquired metadata for the samples
+All metadata was provided by the involved partners. The partners provided the sewage sample metadata electronically via email and DTU registered the entries through DTU bio-archiving system (see Methods). Metadata had three obligatory entries: sample type, sampling dates and geographical location, which all partners must provide. There were additional entries that partners provided when possible, e.g., time, temperature and pH. Metadata information was validated with the following: Geographical origin of sample identifiable via openstreetmap.org and sampling date with a specific format: yyyy-mm-dd. 
+---
+Quality controlling the raw sequencing data
+Each of the raw read libraries were trimmed by BBduk2 which is part of the suite BBtools29(36.49). BBduk2 uses 19-mers to look for contaminating adapters, with the exception of the read tips where kmers down to 11 are used. Adapters were removed from the files. Also the right end of each read is trimmed to remove bases with a Phred score below 20. Reads shorter than 50 bp were discarded. For each sample there exists two trimmed files, along with a file containing discarded reads, and a file containing reads that could not be paired.
+
+---
+Validation for MAGs to be accepted in the final dataset
+To construct a comprehensive, non-redundant, and environmentally representative reference genome dataset covering all sewage samples, we implemented a synergistic methodology using two software tools: CheckM2 (version 1.0.1) and dRep (version 3.4.2). Initially, CheckM2 was deployed on a wide array of 34,725 metagenome-assembled genomes (MAGs), originating from two distinct sources: 23,082 genomes from binned contigs of each single sample analysis, and 11,643 genomes from binned contigs of co-assembled samples by site. The primary goal was the selective retention of medium-quality genomes, as determined by CheckM2, defined by a contamination level ≤10% and a completeness ≥50%. This selection process yielded a refined collection of 12,687 genomes.In the subsequent phase, we employed the dRep using the dereplicate workflow in a structured two-step process. The first step involved clustering the genomes based on the MASH distance, with a threshold set at 0.9 and a sketch size of 1000. This was followed by a finer clustering based on an average nucleotide identity (ANI) of 0.95. This dual-stage approach was specifically designed for the efficient identification and removal of duplicate genomes, culminating in the final collection of 2,332 genomes. This approach ensured the uniqueness and environmental relevance of the genomes in our dataset.
+---
+Validation of the sewage database
+
+Validation of the database comprises two main components. Technical validation of the database includes ensuring uniformity and consistency in data types, lengths, and formats across corresponding fields in different tables. Verifying the integrity of primary and foreign keys used for establishing relations between tables, ensuring referential integrity, and preventing orphaned records. We applied normalization to avoid data redundancy and inconsistencies, particularly when dealing with repeated information across tables and within a table. An example includes the introduction of the ‘gtdb_warning’ table to store each warning message uniquely. Additionally, uniform meta information such as ‘sequencing platform’ shared across all samples was not loaded into the ‘meta’ table, while making this information available within the database description. We also took advantage of the use of unique constraints the database engine offers to ensure cleanliness of the data. For instance in table ‘mag’, it is impossible to store any ad-hoc combination of properties ‘meta_id’, ‘location_id’ and ‘bin_number’, their three-tuple must be unique, which conforms to the definition of the mag. In the database a version of taxonomy is also represented. Several taxons exist with their names written completely the same. Therefore, the taxon name along with the rank of the taxon form a unique object.
+Under content validation we conducted a series of diverse queries to ensure that the structural design allows an effective data retrieval. We evaluate the accuracy and correctness of the retrieved data from the database against the original input and expected outcomes. We replicated some of the analysis presented in Becsei and Fuschi et al.21 study using data retrieved from the database.
+
+
