@@ -28,6 +28,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.12',    # Specify the Python versions you support
+    python_requires='>=3.9',    # Specify the Python versions you support
 )
 
