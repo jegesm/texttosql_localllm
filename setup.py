@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="texttosql_localllm",          # Replace with your package name
-    version="0.1.0",            # Start with a simple version
+    version="0.1.3",            # Start with a simple version
     packages=find_packages(),   # Automatically find packages in your directory
     install_requires=[          # List your package dependencies here
         'chromadb==0.6.3',

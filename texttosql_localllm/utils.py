@@ -9,7 +9,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Setup logging
-logformat = 'Txt2SQL-utils: %(name)s - %(message)s'
+logformat = 'Txt2SQL-utils: %(name)s - %(message)s - %(lineno)d'
 logging.basicConfig(level=logging.INFO, format=logformat)
 logger = logging.getLogger(__name__)
 
