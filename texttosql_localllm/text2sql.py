@@ -106,11 +106,6 @@ class Txt2Sql():
                 
         self.vectorstore_dbschema = Chroma(client=self.chroma_client, embedding_function=self.embeddings, collection_name=collection_name)
 
-    def add_dbschema(self):   
-        """
-        Load the database schema from the schema file and split it into chunks to be stored in the collection
-        it's reference tag is "dbschema"
-        """
         from langchain_community.tools.sql_database.tool import ListSQLDatabaseTool, InfoSQLDatabaseTool, QuerySQLDataBaseTool
         import sql_metadata, sqlparse
         
@@ -124,6 +119,13 @@ class Txt2Sql():
             dbschema = open(self.schema_file, "r").read()
 
         self.full_dbschema = sqlparse.format(dbschema, reindent=True, keyword_case='upper')
+
+    def add_dbschema(self):   
+        """
+        Load the database schema from the schema file and split it into chunks to be stored in the collection
+        it's reference tag is "dbschema"
+        """
+        
         dbschema_splitter = RecursiveCharacterTextSplitter(separators=["CREATE"], chunk_overlap=0, chunk_size=30)
         dbschema_chunks = dbschema_splitter.split_text(self.full_dbschema)
         self.vectorstore_dbschema.add_texts(texts=dbschema_chunks, metadatas=[{"type":"dbschema"} for i in range(0,len(dbschema_chunks))])
