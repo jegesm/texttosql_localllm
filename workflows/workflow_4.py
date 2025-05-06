@@ -79,16 +79,35 @@ class Workflow_4():
 
     def init_tool(self):        
         self.t2s = Txt2Sql(sql_llm_model=self.ollama_sql, db=self.db, schema_file=self.schema_file)
-        if self.examples_path:
-            self.examples_dict = pd.read_csv(self.examples_path).to_dict(orient='records')
-            self.t2s.add_examples(self.examples_dict)
+        # if self.examples_path:
+        #     self.examples_dict = pd.read_csv(self.examples_path).to_dict(orient='records')
+        #     self.t2s.add_examples(self.examples_dict)
+
+        self.t2s._init_embedding_model()
+        
+        self.t2s._init_examples(reset=True)
+        
+        # if len(self.t2s.vectorstore_examples.get()['ids']) == 0:
+        examples_dict = pd.read_csv(self.examples_path)#.to_dict(orient='records')
+        self.t2s.add_examples(examples_dict)
+        self.t2s._init_example_selector()
+        
+        self.t2s._init_docs(reset=True)
+        # if len(self.t2s.vectorstore_docs.get()['ids']) == 0:
+        # table_description = f"{self.ddir}/table_description.txt"
+        # table_columns_description = f"{self.ddir}/table_column_description.txt"
+        # self.t2s.load_split_add_csv(table_description, csv_args={'fieldnames': ['Table name', 'Description'], 'delimiter': '\t'})
+        # self.t2s.load_split_add_csv(table_columns_description, csv_args={'fieldnames': ['Table name', 'Column name', 'Variable type', 'Description'], 'delimiter': '\t'})
+        
+        self.t2s._init_dbschema(reset=True)
+        # if len(self.t2s.vectorstore_dbschema.get()['ids']) == 0:
+        self.t2s.add_dbschema()
 
     def run(self, question, execute_query=False):
         if self.t2s is None:
             self.init_tool()
 
         # Load the database schema        
-        self.t2s._init_dbschema()
         self.t2s.set_question(question)        
 
         #if answered:

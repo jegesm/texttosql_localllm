@@ -335,6 +335,11 @@ def postprocess_sql(sql, debug=False):
         pass
 
     try:
+        sql = sql.split(";\n")[0]
+    except:
+        pass
+
+    try:
         sql = sql.split("AI:")[1]
     except:
         pass
