@@ -235,7 +235,7 @@ def update_accuracy_score_single(prefix, param, question, answer, accuracy_score
 
     conn = sqlite3.connect(f"{prefix}_test.db")
     cursor = conn.cursor()
-    print(question, answer)
+    # print(question, answer)
     cursor.execute(f'''
     UPDATE result{param}
     SET accuracy_score = {accuracy_score}
@@ -331,6 +331,11 @@ def postprocess_sql(sql, debug=False):
 
     try:
         sql = sql.split("SQLQuery:")[1]   
+    except:
+        pass
+
+    try:
+        sql = sql.split("SQL:")[1]   
     except:
         pass
 

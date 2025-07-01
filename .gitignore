@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+*.swp
+
+mychroma.db
+sewage_test.db

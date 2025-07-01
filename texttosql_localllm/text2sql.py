@@ -18,6 +18,7 @@ import chromadb
 #chromadb.api.client.SharedSystemClient.clear_system_cache()
 from chromadb.config import Settings
 
+import time
 import logging
 logger = logging.getLogger(__name__)
 
@@ -64,7 +65,8 @@ class Txt2Sql():
         self.sql_llm_model = OllamaLLM(base_url=host,
                         model=self.sql_llm_model,
                         temperature=temperature,
-                        keep_alive=keep_alive)    
+                        keep_alive=keep_alive,
+                        num_ctx=8196)    
         
     def _init_embedding_model(self):
         # with local CPU or GPU Usage
@@ -225,7 +227,7 @@ class Txt2Sql():
         # init embedding model if not already
         # if not self.embeddings:
         #     self._init_embedding_model()
-
+        logger.info(f"Retrieving documents for the question")
         # Read the documents from the collection stored in the Vector DB
         if self.vectorstore_docs:
             retriever = self.vectorstore_docs.as_retriever(search_type="similarity_score_threshold", 
@@ -235,6 +237,7 @@ class Txt2Sql():
             context = "\n".join([doc.page_content for doc in resp])
         else:
             context = ""
+        logger.info(f"Retrieved documents")
         return context
 
     def _init_examples(self, reset=False):
@@ -264,11 +267,15 @@ class Txt2Sql():
 
         if not self.vectorstore_examples:
             self._init_examples()
+
+        try:
+            if self.examples_dict == None:
+                self.examples_dict = examples_dict
+        except:            
+            if self.examples_dict.shape[0]>0:
+                self.examples_dict = pd.concat([self.examples_dict, examples_dict]).drop_duplicates().reset_index(drop=True)
         
-        if self.examples_dict:
-            self.examples_dict = pd.concat([self.examples_dict, examples_dict]).drop_duplicates().reset_index(drop=True)
-        else:
-            self.examples_dict = examples_dict
+            
 
         # Make sure that there are no duplicates
         logger.info(f"Added examples")
@@ -276,8 +283,10 @@ class Txt2Sql():
         # Make sure that the question is not in the examples               
         if self.testing:
             temp_examples_dict = examples_dict[examples_dict['question'] != self.question]
+            print("TESTNG, question is excluded from examples",temp_examples_dict.shape)
         else:
             temp_examples_dict = self.examples_dict
+            print(temp_examples_dict.shape)
 
         # init embedding model if not already
         if not self.embeddings:
@@ -427,7 +436,7 @@ class Txt2Sql():
         ("assistant", "Based on the context: {rag_context}"),
             ]
         )
-
+        logger.info(f"Feshot prompt created with {len(self.vectorstore_examples.get()['ids'])} examples")
         self.prompt = final_prompt
 
     def run_with_fewshot_prompt(self, return_prompt=False, full_dbschema=True):
@@ -467,9 +476,9 @@ class Txt2Sql():
         self.set_dbschema(full=full_dbschema)  
         
         self.create_fewshot_prompt()
-        
-        db_chain = SQLDatabaseSequentialChain.from_llm(self.sql_llm_model, self.db, verbose=False, use_query_checker=True, query_checker_prompt=validation_prompt, return_sql=True)
-
+        logger.info(f"Creating SQL database chain")
+        db_chain = SQLDatabaseSequentialChain.from_llm(self.sql_llm_model, self.db, verbose=False, use_query_checker=False, query_checker_prompt=validation_prompt, return_sql=True)
+        logger.info(f"Created chain")
 
         final_prompt = self.prompt.format(question=self.question,
                                         dbschema=self.dbschema,
@@ -477,10 +486,16 @@ class Txt2Sql():
                                         extra_documentation=self.extra_documentation,
                                         rag_context=self._retrieve_documents(),
                                         )
+        logger.info(f"Created prompt")
         #print(final_prompt)
         if return_prompt:
             return "", final_prompt
+        logger.info(f"Sending query request to LLM")
+        t1 = time.time()
         gen_sql = db_chain.invoke(final_prompt, model_kwargs={"stop":["\n", ";", "Human"]})
+        t2 = time.time()
+        logger.info(f"SQL generation took {t2-t1} seconds")
+        logger.info(f"Received response from Ollama")
         return gen_sql, final_prompt
 
 

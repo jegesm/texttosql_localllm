@@ -1,0 +1,113 @@
+table	column	type	description
+antibiotic_resfinder	id	int4	(Primary Key) ID for each record in this table
+antibiotic_resfinder	gene_resfinder_id	int4	(Foreign Key) Related to "id" column of "gene_resfinder" table. 
+antibiotic_resfinder	antibiotic	type_phenotype	The name of the antibiotic drug certain gene provides resistance against. If a member of the type_phenotype is in the question then use this table
+checkm2	id	int4	(Primary Key) ID for each record in the this table.
+checkm2	mag_reference_id	int4	(Foreign Key) Related to "id" column of "mag_reference" table.
+checkm2	run	int4	Identifies the sequencing run associated with each sample. Some samples were sequenced more than once, and this column helps differentiate between different sequencing runs for the same sample
+checkm2	completeness_model	type_completeness_model	Model used for precicting completeness. Possible values: "Gradient Boost (General Model)" or "Neural Network (Specific Model)"
+checkm2	completeness_general	float4	Represents the estimated completeness of the genome bins using the general completeness model. It provides a value as a percentage, indicating how complete the genome is.
+checkm2	completeness_specific	float4	Represents the estimated completeness of the genome bins using the general completeness model. It provides a value as a percentage, potentially offering a more tailored assessment of completeness based on specific criteria or markers.
+checkm2	contamination	float4	Indicates the estimated percentage of contamination present in the genome bins. It represents the level of foreign DNA or non-target sequences present, affecting the purity of the bin.
+checkm2	translation_table_used	int4	Refers to the translation table used for translating nucleotide sequences into amino acids during gene prediction or annotation process.
+checkm2	coding_density	float4	Coding density is the percentage of the genome that encodes proteins.
+checkm2	contig_n50	int4	Represents the length of the shortest contig such that the contigs longer than or equal to this length represent at least 50% of the assembled genome size.
+checkm2	average_gene_length	float4	The average length of predicted genes or coding sequences within the genome bins.
+checkm2	genome_size	int4	Estimated size of the genome bins in base pairs (bp).
+checkm2	gc_content	float4	The percentage of guanine-cytosine (GC) base pairs present in the genome bins. GC content is often associated with various genomic characteristics. The value is between 0 and 1.
+checkm2	total_coding_sequences	int4	The total number of predicted coding sequences or genes identified within genome bins.
+checkm2	additional_notes	text	Additional comments, notes.
+class_resfinder	id	int4	(Primary Key) ID for each record in this table.
+class_resfinder	name	text	Name of the antimicrobial resistance class
+class_resfinder	gene_resfinder_ids	int4	Array of ids (node_resfinder_gene) belong to each class.
+class_resfinder_clr	meta_id	int4	(Foreign Key) Related to "id" column of "meta" table.
+class_resfinder_clr	run	int4	Identifies the sequencing run associated with each sample. Some samples were sequenced more than once, and this column helps differentiate between different sequencing runs for the same sample
+class_resfinder_clr	class_resfinder_id	int4	(Foreign Key) Related to "id" column of "class_resfinder" table.I
+class_resfinder_clr	clr	int4	Abundance of genes groupped by resistence class in centered log ratio (clr) value 
+gene_resfinder_clr	meta_id	int4	(Foreign Key) Related to "id" column of "meta" table.
+gene_resfinder_clr	run	int4	Identifies the sequencing run associated with each sample. Some samples were sequenced more than once, and this column helps differentiate between different sequencing runs for the same sample 
+gene_resfinder_clr	gene_resfinder_id	int4	(Foreign Key) Related to "id" column of "gene_resfinder" table.
+gene_resfinder_clr	clr	int4	Gene abundance in centered log ratio (clr) value
+gene_resfinder	id	int4	(Primary Key) ID for each record in this table
+gene_resfinder	name	text	Name of each antimicrobial resistance gene
+gene_resfinder	length	int4	Length of each antimicrobial resistance gene
+gene_resfinder	enzymatic_inactivation	bool	Indicates whether enzymatic inactivation is involved in the resistance mechanism mediated by the gene. Values: "TRUE", "FALSE" or "NA" if data is not available
+gene_resfinder	enzymatic_modification	bool	Indicates whether enzymatic modification is involved in the resistance mechanism mediated by the gene. Values: "TRUE", "FALSE" or "NA" if data is not available
+gene_resfinder	increased_efflux	bool	Indicates whether increased efflux is involved in the resistance mechanism mediated by the gene. Values: "TRUE", "FALSE" or "NA" if data is not available
+gene_resfinder	target_modification	bool	Indicates whether target modification is involved in the resistance mechanism mediated by the gene. Values: "TRUE", "FALSE" or "NA" if data is not available
+gene_resfinder	target_protection	bool	Indicates whether target protection is involved in the resistance mechanism mediated by the gene. Values: "TRUE", "FALSE" or "NA" if data is not available
+contig	id	int4	(Primary Key) ID for each record in this table.
+contig	location_id	int4	(Foreign Key) Related to "id" column of "location" table.
+contig	mag_reference_id	int4	(Foreign Key) Related to "id" column of "mag_reference" table.
+contig	name	varchar(16)	Name of the contig. The contig name is not unique as they are generated for each assembly separately. 
+contig	length	int4	Length of the contig in basepairs.
+contig	coverage	int4	Coverage is the average number of reads covering a position in the contig.
+contig	possible_source	text	The source of contig, the category with the highest score. Its value is "phage" or "chromosome" or "plasmid". This column is used for searching "phage", "chromosome" or "plasmid" contig.
+gene_annotation	id	int4	(Primary Key) ID for each record in the this table.
+gene_annotation	contig_id	int4	(Foreign Key) Related to "id" column of "contig" table.
+gene_annotation	gene	type_gene	Name of the gene.
+gene_annotation	protein_id	int4	(Foreign Key) Related to "id" column of "protein" table.
+gene_annotation	genetype	type_genotype	Type of gene found in any of the contigs. Possible values: tmRNA (transfer-messenger RNA), rRNA (ribosomal RNA), tRNA (transfer RNA), CDS (coding sequence)
+gene_annotation	ec_number	varchar(16)	If the identified gene is an enzyme this field stores its Enzyme Commission number (EC number).
+gene_annotation	cog_reference	varchar(8)	If the identified gene has a Database of Clusters of Orthologous Genes (COG) id, this field displays it.
+gene_annotation	pos_start	int4	Start position of the gene within the contig.
+gene_annotation	pos_stop	int4	End position of the gene within the contig.
+gene_annotation	length	int4	Length of the gene.
+gene_annotation	reverse	bool	Indicates whether a feature is located on the reverse (complementary) strand. The value is "TRUE" if on reverse strand and "FALSE" if not in reverse strand.
+gtdb	id	int4	(Primary Key) ID for each record in the this table.
+gtdb	mag_reference_id	int4	(Foreign Key) Related to "id" column of "mag_reference" table.
+gtdb	tax_gtdb_id	int4	(Foreign Key) Related to "id" column of "tax_gtdb" table.
+gtdb	classification_method	type_classification_method	Indicates the rule used to classify the genome. This field could be one of the following: "taxonomic classification fully defined by topology","ANI", "taxonomic classification defined by topology and ANI", "taxonomic novelty determined using RED"
+gtdb	msa_percent	float4	Indicates the percentage of the marker-gene sequence alignment (MSA) spanned by the genome.
+gtdb	translation_table	float4	Indicates the translation table used to call genes for each genome. (https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi)
+gtdb	red_value	float4	Indicates, when required, the relative evolutionary divergence (RED) for a query genome. It is not calculated when the query genome can be classified based on average nucleotide identity (ANI).
+location	id	int4	(Primary Key) ID for each record in this table
+location	country	varchar(16)	Country of origin.
+location	city	varchar(32)	City of origin.
+location	plant	varchar(32)	Name of the sewage treatment plant of origin.
+location	lat	float8	Latitude of the sampling site.
+location	lon	float8	Longitude of the sampling site.
+mag_abundance_clr	mag_reference_id	int4	(Foreign Key) Related to "id" column of "mag_reference" 
+mag_abundance_clr	meta_id	int4	(Foreign Key) Related to "id" column of "meta" table.
+mag_abundance_clr	clr	float4	 The mag abundance in clr per sample.
+mag_reference	id	int4	(Primary Key) ID for each record in this table.
+mag_reference	bin_number	int4	Number of bin/MAG in a specific sample.
+mag_reference	run	int4	Identifies the sequencing run associated with each sample. Some samples were sequenced more than once, and this column helps differentiate between different sequencing runs for the same sample.
+mag_reference	name	varchar(64)	Name of the bin/MAG.
+mag_reference	assembly_type	type_assembly	This column specifies the assembly type used to generate the contigs within each MAG. Quality-filtered reads were first assembled individually for each sample (single-sample assembly). Samples were grouped by site, and reads from each site were assembled together (co-assembly). The resulting contigs from these assemblies were then used for binning and genome reconstruction.
+meta	id	int4	(Primary Key) ID for each record in this table.
+meta	sample_id	int4	This is a unique ID for each samples.
+meta	location_id	int4	(Foreign Key) Related to "id" column of "location" table.
+meta	collection_date	date	The collection date of the sewage sample. Format: yyyy-mm-dd
+meta	complete_name	varchar(64)	Full name of the sewage sample. Example: DTU (Technical University of Denmark)_2022 (Year of sequencing)_1015068 (unique sample id)_1 (replica id)_MG (metagenome)_IT (country)_BO (city) _210323 (collection date)_GSL_856 (another sample id)
+meta	lockdown	bool	During the COVID-19 pandemic mobility in the cities were limited. This is refered to as COVID-19 lockdown. The lockdown started around 17 of March in 2020. Values in this column: "TRUE" if it was collected during lockdown or "FALSE" if it was collected not during lockdown
+meta	ph	float8	The pH of the sewage sample at the time of the sample collection. Some cell is empty so remove these cells before ordering this column.
+meta	temperature	float8	The sewage temperature (in degrees Celsius) at the time of sample collection. Some cell is empty so remove these cells before ordering this column. 
+protein	id	int4	(Primary Key) ID for each record in the this table.
+protein	description	varchar(128)	Name of the protein coded by the gene 
+qpcr	meta_id	int4	(Foreign Key) Related to "id" column of "meta" table.
+qpcr	qpcr_target_id	int4	(Foreign Key) Related to "id" column of "qpcr_target" table. 
+qpcr	tax_gtdb_id	int4	(Foreign Key) Related to "id" column of "tax_gtdb" table.
+qpcr	pathogen_name	varchar(96)	Name of the pathogen targeted in the qPCR reaction.
+qpcr	is_present	bool	This column indicates if the qPCR test is positive, meaning that the target pathogen is detected in the sample. Possible values: 1, NA . 
+qpcr	ct	float8	The Ct values for positive samples.
+relationship_gtdb	tax_gtdb_id	int4	(Foreign Key) Related to "id" column of "tax_gtdb" table.
+relationship_gtdb	rank	type_rank	Rank of the taxon on the given node_id.
+relationship_gtdb	tax_gtdb_id_parent	int4	Identification for the taxon above the taxon indicated with the node_id.
+tax_gtdb	id	int4	(Primary Key) ID for each record in the this table.
+tax_gtdb	name	varchar(40)	Name of the taxon identified conforming to GTDB release 220
+tax_gtdb	rank	type_rank	Rank of the identified taxon. Possible values are: "species", "family", "order", "kingdom", "phylum", "genus"
+tax_gtdb	human_microbiome	bool	Indicates whether the species is part of the Unified Human Gastrointestinal Genome (UHGG) collection. If it is "TRUE" then it parts of the human gastrointestinal genome, if it is "FALSE" then it is not part of it.
+tax_gtdb	ncbi_reference	varchar(16)	NCBI reference ID of the identified species.
+qpcr_target	id	int4	(Primary Key) ID for each record in the this table.
+qpcr_target	target	varchar(8)	The target sequence (gene, genetic marker, or pathogen-specific region) that the qPCR assay is designed to detect in order to identify the pathogen (specified in the "qpcr" table).
+qpcr_target	forward_primer	varchar(16)	The name of the forward primer used in the qPCR reaction.
+qpcr_target	reverse_primer	varchar(16)	The name of the reverse primer used in the qPCR reaction.
+qpcr_target	probe	varchar(16)	The name of the qPCR probe used in the the qPCR reaction.
+qpcr_target	forward_primer_sequence	text	The sequence of the forward primer.
+qpcr_target	reverse_primer_sequence	text	The sequence of the reverse primer.
+qpcr_target	probe_sequence	text	The sequence of the probe.
+mag_presence_absence	meta_id	int4	(Foreign Key) Related to "id" column of "meta" table.
+mag_presence_absence	location_id	int4	(Foreign Key) Related to "id" column of "location" table.
+mag_presence_absence	tax_gtdb_id	int4	(Foreign Key) Related to "id" column of "tax_gtdb" table.
+mag_presence_absence	is_present	bool	This column shows whether the genome of a bacterial species (identified by the tax_gtdb_id) was reconstructed from a single sample (specified by the meta_id) or a sampling site (specified by the location_id) at a minimum of medium quality following the MIMAG criteria, confirming the species' presence in that sample. Possible values: 1, NA.
