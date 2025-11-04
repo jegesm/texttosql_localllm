@@ -7,7 +7,7 @@ name = "texttosql_localllm"
 version = "0.2.1"
 description="Run text to sql workflows and benchmarks using Ollama and Langchain"
 readme = "README.md"  # You can also specify a file path here
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 
 # Authors and maintainers can be a list of tables.
 authors = [
@@ -19,18 +19,19 @@ license = { file = "LICENSE" }
 
 # Dependencies that will be installed along with your package.
 dependencies = [
-    'chromadb==0.6.3',
-    'langchain==0.3.19',
-    'langchain-chroma==0.2.2',
-    'langchain-community==0.3.18',
-    'langchain-core==0.3.39',
-    'langchain-experimental==0.3.4',
-    'langchain-ollama==0.2.3',
-    'langchain-openai==0.3.7',
-    'langchain-text-splitters==0.3.6',
+    'chromadb',
+    "langchain>=1.0.0",
+    "langchain-chroma>=1.0",
+    "langchain-community",
+    "langchain-core>=1.0",
+    "langchain-experimental",
+    "langchain-ollama>=1.0",
+    "langchain-openai>=1.0",
+    "langchain-text-splitters>=1.0",
+    "pandas>=2.3.3",
     'sql_metadata',
     'sqlalchemy',
-    'sqlvalidator'
+    'sqlvalidator',
 ]
 
 # Additional optional fields

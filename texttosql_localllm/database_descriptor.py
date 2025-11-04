@@ -1,5 +1,5 @@
 from langchain_community.tools.sql_database.tool import ListSQLDatabaseTool, InfoSQLDatabaseTool, QuerySQLDataBaseTool
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
 from sqlalchemy.exc import OperationalError
 
